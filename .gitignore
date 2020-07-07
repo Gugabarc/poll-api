@@ -29,6 +29,9 @@ hs_err_pid*
 *.ipr
 
 HELP.md
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**

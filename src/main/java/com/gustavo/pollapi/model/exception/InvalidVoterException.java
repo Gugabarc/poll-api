@@ -6,6 +6,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class InvalidVoterException extends ResponseStatusException {
 
     public InvalidVoterException() {
-        super(HttpStatus.UNAUTHORIZED, "CPF não habilitado a votar.");
+        super(HttpStatus.UNAUTHORIZED, "Unauthorized CPF.");
     }
 }

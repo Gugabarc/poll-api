@@ -23,11 +23,12 @@ public class VoterService {
         this.validateVoterClient = validateVoterClient;
     }
 
-    public Mono<Voter> create(String cpf) {
+    public Mono<Void> create(String cpf) {
         return voterRepository.findById(cpf)
                 .hasElement()
+                .filter(v -> !v)
                 .switchIfEmpty(error(new VoterAlreadyExistsException()))
-                .flatMap(v -> voterRepository.save(new Voter(cpf)));
+                .then();
     }
 
     public Mono<Voter> findEnabledVoter(String cpf) {

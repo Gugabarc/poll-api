@@ -4,12 +4,12 @@ public class PollOption {
 
     private String alias;
     private String response;
-    private Integer voteCount;
+    private int voteCount;
 
-    public PollOption(String alias, String response, Integer voteCount) {
+    public PollOption(String alias, String response) {
         this.alias = alias;
         this.response = response;
-        this.voteCount = voteCount;
+        this.voteCount = 0;
     }
 
     public void addVote() {
@@ -24,7 +24,7 @@ public class PollOption {
         return response;
     }
 
-    public Integer voteCount() {
+    public int voteCount() {
         return voteCount;
     }
 }

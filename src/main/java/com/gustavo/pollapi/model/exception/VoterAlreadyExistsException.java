@@ -6,6 +6,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class VoterAlreadyExistsException extends ResponseStatusException {
 
     public VoterAlreadyExistsException() {
-        super(HttpStatus.BAD_REQUEST, "Pessoa já cadastrada.");
+        super(HttpStatus.BAD_REQUEST, "CPF already registered.");
     }
 }

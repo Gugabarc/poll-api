@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Document(collection = "polls")
@@ -13,12 +12,11 @@ public class Poll {
     @Id
     private String id;
 
-    private String name;
+    private String question;
     private String description;
-    private Integer expirationMinutes;
-    private LocalDateTime openDate;
+    private Integer expirationInMinutes;
     private Set<PollOption> options;
-    private boolean isOpen;
+    private boolean isFinished;
 
     public String id() {
         return id;
@@ -30,8 +28,8 @@ public class Poll {
                 .forEach(PollOption::addVote);
     }
 
-    public void setOpen(boolean open) {
-        isOpen = open;
+    public void setFinished(boolean finished) {
+        isFinished = finished;
     }
 
     public static Builder aPoll() {
@@ -40,12 +38,11 @@ public class Poll {
 
     public static final class Builder {
         private String id;
-        private String name;
+        private String question;
         private String description;
-        private Integer expirationMinutes;
-        private LocalDateTime openDate;
+        private Integer expirationInMinutes;
         private Set<PollOption> options;
-        private boolean isOpen;
+        private boolean isFinished;
 
         private Builder() {
         }
@@ -55,8 +52,8 @@ public class Poll {
             return this;
         }
 
-        public Builder name(String name) {
-            this.name = name;
+        public Builder question(String question) {
+            this.question = question;
             return this;
         }
 
@@ -65,13 +62,8 @@ public class Poll {
             return this;
         }
 
-        public Builder expirationMinutes(Integer expirationMinutes) {
-            this.expirationMinutes = expirationMinutes;
-            return this;
-        }
-
-        public Builder openDate(LocalDateTime openDate) {
-            this.openDate = openDate;
+        public Builder expirationMinutes(Integer expirationInMinutes) {
+            this.expirationInMinutes = expirationInMinutes;
             return this;
         }
 
@@ -80,17 +72,16 @@ public class Poll {
             return this;
         }
 
-        public Builder isOpen(boolean isOpen) {
-            this.isOpen = isOpen;
+        public Builder isFinished(boolean isFinished) {
+            this.isFinished = isFinished;
             return this;
         }
 
         public Poll build() {
             Poll poll = new Poll();
-            poll.name = this.name;
-            poll.expirationMinutes = this.expirationMinutes;
-            poll.isOpen = this.isOpen;
-            poll.openDate = this.openDate;
+            poll.question = this.question;
+            poll.expirationInMinutes = this.expirationInMinutes;
+            poll.isFinished = this.isFinished;
             poll.description = this.description;
             poll.options = this.options;
             poll.id = this.id;

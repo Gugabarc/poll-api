@@ -6,6 +6,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class VoterNotFoundException extends ResponseStatusException {
 
     public VoterNotFoundException() {
-        super(HttpStatus.NOT_FOUND, "Pessoa não encontrado.");
+        super(HttpStatus.NOT_FOUND, "CPF not found.");
     }
 }
