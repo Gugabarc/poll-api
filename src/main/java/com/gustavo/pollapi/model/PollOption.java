@@ -2,25 +2,30 @@ package com.gustavo.pollapi.model;
 
 public class PollOption {
 
+    private String alias;
     private String response;
-    private String description;
-    private Integer votes;
+    private Integer voteCount;
 
-    public PollOption(String response, String description, Integer votes) {
+    public PollOption(String alias, String response, Integer voteCount) {
+        this.alias = alias;
         this.response = response;
-        this.description = description;
-        this.votes = votes;
+        this.voteCount = voteCount;
+    }
+
+    public void addVote() {
+        voteCount++;
+    }
+
+    public String alias() {
+        return alias;
     }
 
     public String response() {
         return response;
     }
 
-    public String description() {
-        return description;
-    }
-
-    public Integer votes() {
-        return votes;
+    public Integer voteCount() {
+        return voteCount;
     }
 }
+

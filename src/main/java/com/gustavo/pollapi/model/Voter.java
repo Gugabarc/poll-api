@@ -9,7 +9,6 @@ public class Voter {
     @Id
     private String cpf;
 
-
     public Voter(String cpf) {
         this.cpf = cpf;
     }
