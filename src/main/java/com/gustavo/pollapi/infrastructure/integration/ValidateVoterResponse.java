@@ -4,11 +4,14 @@ public class ValidateVoterResponse {
 
     private String status;
 
-    public ValidateVoterResponse(String status){
-        this.status = status;
+    public ValidateVoterResponse(){
     }
 
-    public String status() {
+    public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -33,7 +33,7 @@ public class VoterService {
 
     public Mono<Voter> findEnabledVoter(String cpf) {
         return validateVoterClient.validate(cpf)
-                .filter(r -> StringUtils.equalsIgnoreCase(ABLE_TO_VOTE.name(), r.status()))
+                .filter(r -> StringUtils.equalsIgnoreCase(ABLE_TO_VOTE.name(), r.getStatus()))
                 .switchIfEmpty(error(new InvalidVoterException()))
                 .flatMap(v -> voterRepository.findById(cpf))
                 .switchIfEmpty(error(new VoterAlreadyExistsException()));

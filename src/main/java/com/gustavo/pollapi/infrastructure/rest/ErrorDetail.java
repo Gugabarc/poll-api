@@ -1,7 +1,5 @@
 package com.gustavo.pollapi.infrastructure.rest;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 public class ErrorDetail {
 
     private final String field;
@@ -12,13 +10,11 @@ public class ErrorDetail {
         this.message = message;
     }
 
-    @JsonGetter
-    public String field() {
+    public String getField() {
         return field;
     }
 
-    @JsonGetter
-    public String message() {
+    public String getMessage() {
         return message;
     }
 }

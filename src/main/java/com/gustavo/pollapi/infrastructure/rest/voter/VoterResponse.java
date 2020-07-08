@@ -10,8 +10,7 @@ public class VoterResponse {
         this.cpf = cpf;
     }
 
-    @JsonGetter
-    public String cpf() {
+    public String getCpf() {
         return cpf;
     }
 }

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface VoteReceiptRepository extends ReactiveMongoRepository<Vote, String> {
+public interface VoteRepository extends ReactiveMongoRepository<Vote, String> {
 
-    @Query("{ 'cpf': ?0, 'receiptCode': ?1}")
-    Mono<Vote> findByCpfAndReceiptCode(String cpf, String receiptCode);
+    @Query("{ 'cpf': ?0, 'pollId': ?1}")
+    Mono<Vote> findByCpfAndPollId(String cpf, String pollId);
 }

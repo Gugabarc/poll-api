@@ -12,8 +12,7 @@ public class ErrorResponse {
         this.errors = errors;
     }
 
-    @JsonGetter
-    public Collection<ErrorDetail> errors() {
+    public Collection<ErrorDetail> getErrors() {
         return errors;
     }
 }

@@ -10,8 +10,7 @@ public class CreatePollResponse {
         this.id = id;
     }
 
-    @JsonGetter
-    public String id() {
+    public String getId() {
         return id;
     }
 }

@@ -1,10 +1,15 @@
 package com.gustavo.pollapi.model;
 
+import com.gustavo.pollapi.model.exception.InvalidPollOptionException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Set;
+
+import static java.time.Duration.between;
+import static java.time.LocalDateTime.now;
 
 @Document(collection = "polls")
 public class Poll {
@@ -15,6 +20,7 @@ public class Poll {
     private String question;
     private String description;
     private Integer expirationInMinutes;
+    private LocalDateTime startedAt;
     private Set<PollOption> options;
     private boolean isFinished;
 
@@ -22,18 +28,29 @@ public class Poll {
         return id;
     }
 
+    public boolean isOpen(){
+        return isFinished == false
+                && (expirationInMinutes == null || between(startedAt, now()).toMinutes() <= expirationInMinutes);
+    }
+
     public void vote(String optionAlias){
         options.stream()
                 .filter(o -> StringUtils.equalsIgnoreCase(o.alias(), optionAlias))
-                .forEach(PollOption::addVote);
-    }
-
-    public void setFinished(boolean finished) {
-        isFinished = finished;
+                .findFirst()
+                .orElseThrow(() -> new InvalidPollOptionException())
+                .addVote();
     }
 
     public static Builder aPoll() {
         return new Builder();
+    }
+
+    public LocalDateTime startedAt() {
+        return startedAt;
+    }
+
+    public Integer expirationInMinutes() {
+        return expirationInMinutes;
     }
 
     public static final class Builder {
@@ -41,6 +58,7 @@ public class Poll {
         private String question;
         private String description;
         private Integer expirationInMinutes;
+        private LocalDateTime startedAt;
         private Set<PollOption> options;
         private boolean isFinished;
 
@@ -59,6 +77,11 @@ public class Poll {
 
         public Builder description(String description) {
             this.description = description;
+            return this;
+        }
+
+        public Builder startedAt(LocalDateTime startedAt) {
+            this.startedAt = startedAt;
             return this;
         }
 
@@ -81,6 +104,7 @@ public class Poll {
             Poll poll = new Poll();
             poll.question = this.question;
             poll.expirationInMinutes = this.expirationInMinutes;
+            poll.startedAt = this.startedAt;
             poll.isFinished = this.isFinished;
             poll.description = this.description;
             poll.options = this.options;
