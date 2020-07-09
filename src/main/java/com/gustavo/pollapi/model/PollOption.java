@@ -3,12 +3,12 @@ package com.gustavo.pollapi.model;
 public class PollOption {
 
     private String alias;
-    private String response;
+    private String option;
     private int voteCount;
 
-    public PollOption(String alias, String response) {
+    public PollOption(String alias, String option) {
         this.alias = alias;
-        this.response = response;
+        this.option = option;
         this.voteCount = 0;
     }
 
@@ -20,8 +20,8 @@ public class PollOption {
         return alias;
     }
 
-    public String response() {
-        return response;
+    public String option() {
+        return option;
     }
 
     public int voteCount() {

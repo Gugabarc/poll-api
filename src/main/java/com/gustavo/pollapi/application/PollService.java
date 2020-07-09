@@ -76,4 +76,9 @@ public class PollService {
                 .filter(Poll::isOpen)
                 .switchIfEmpty(error(new PollFinishedException()));
     }
+
+    public Mono<Poll> resultVote(String pollId) {
+        return pollRepository.findById(pollId)
+                .switchIfEmpty(error(new PollNotFoundException()));
+    }
 }

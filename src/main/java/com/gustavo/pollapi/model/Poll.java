@@ -45,12 +45,12 @@ public class Poll {
         return new Builder();
     }
 
-    public LocalDateTime startedAt() {
-        return startedAt;
+    public Set<PollOption> options() {
+        return options;
     }
 
-    public Integer expirationInMinutes() {
-        return expirationInMinutes;
+    public void setFinished(boolean finished) {
+        isFinished = finished;
     }
 
     public static final class Builder {

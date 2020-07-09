@@ -1,7 +1,5 @@
 package com.gustavo.pollapi.infrastructure.rest.voter;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 public class VoterResponse {
 
     private final String cpf;

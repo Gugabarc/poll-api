@@ -9,6 +9,6 @@ import reactor.core.publisher.Flux;
 @Repository
 public interface PollRepository extends ReactiveMongoRepository<Poll, String> {
 
-    @Query("{'isOpen' : ?0}")
-    Flux<Poll> findAllByIsOpen(boolean isOpen);
+    @Query("{'isFinished' : ?0}")
+    Flux<Poll> findAllByIsFinished(boolean isFinished);
 }
