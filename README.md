@@ -71,3 +71,4 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 - Acrescentar a possibilidade de criar respostas customizadas no endpoint de criação de votações (algo que o código já suporta em sua modelagem)
 - Utilizar alguma tecnologia como Spring Cloud Config + Vault para armazenamento de credenciais de banco, fila SQS e arquivos de configuração, que hoje estão contidos na aplicação
 - Inclusão de Dockerfile para rodar a aplicação local
+- Inclusão das annotations do Swagger para gerar automaticamente a documentação dos endpoints disponíveis
