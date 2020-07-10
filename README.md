@@ -64,7 +64,7 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 
 ## Persistência
 
-A persistência dos dados é realizada no mongoDB utilizando três collections: polls (para votações), voters (para votantes) e votes (para registrar quem já votou em cada votação). O BD está hospedado utilizando a infraestrutura grátis em cloud.mongodb.com.
+A persistência dos dados é realizada no mongoDB utilizando três collections: polls (para votações), voters (para votantes) e votes (para registrar quem já votou em cada votação). O BD está hospedado utilizando a infraestrutura grátis em cloud.mongodb.com. A escolha por um banco não relacional se deve principalmente ao fato de termos estruturas variáveis para as respostas de cada votação, podendo assim futuramente disponibilizar diversos formatos de respostas. 
 
 Seguem exemplos abaixo dos dados:
 
@@ -134,3 +134,4 @@ Seguem exemplos abaixo dos dados:
 - Realizar testes de performance
 - Endpoint que permita finalizar uma sessão aberta antes do prazo expirar
 - Retornar no endpoint de resultados se a sessão ainda está aberta e quando será fechada
+- Utilizar o padrão strategy para suporte a diversos tipos de respostas, podendo estas serem de múltiplas escolhas, escrita, preenchimento de formulários, etc.
