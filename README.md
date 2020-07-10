@@ -34,14 +34,18 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 {
     "responses": [
         {
-            "option": "string",
+            "option": "Não",
+            "alias": "NO",
             "votes": 0
         },
         {
-            "option": "string",
-            "votes": 0
+            "option": "Sim",
+            "alias": "YES",
+            "votes": 1
         }
-    ]
+    ],
+    "endIn": "2020-07-09T23:10:26.794",
+    "question": "Você gosta do home office?"
 }
 ```
 
@@ -58,7 +62,40 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 ```
 {
     "cpf": "string",
-    "option": "string"
+    "optionAlias": "string"
+}
+```
+
+## Tratamento de erros
+
+Futuramente pretende-se avaliar a adição no exception handler de um direcionamento dos erros/exceptions não previstos para uma ou mais filas SQS apenas para esta finalizade, de forma que permita monitoramento (caso este não seja feito no log diretamente), análise, e eventual reprocessamento.
+
+A estrutura abaixo refere-se aos erros de campos obrigatórios:
+
+```
+{
+    "errors": [
+        {
+            "field": "cpf",
+            "message": "invalid Brazilian individual taxpayer registry number (CPF)"
+        },
+        {
+            "field": "optionAlias",
+            "message": "must not be blank"
+        }
+    ]
+}
+```
+
+Demais mensagens seguem o padrão abaixo, e necessitam ser adaptadas para manter o padrão acima:
+
+```
+{
+    "timestamp": "2020-07-10T06:09:56.897+0000",
+    "status": 403,
+    "error": "Forbidden",
+    "message": "Poll ended.",
+    "path": "/v1/poll/5f07cd9acedc75f0d8ce34cc/vote"
 }
 ```
 
@@ -68,7 +105,7 @@ A persistência dos dados é realizada no mongoDB utilizando três collections: 
 
 Seguem exemplos abaixo dos dados:
 
-**Polls**
+**Polls** - conceito de 'alias' para as repostas permite identificá-las por este campo, não sendo necessário validar o texto da resposta em si.
 ```
 [
   {
@@ -133,5 +170,4 @@ Seguem exemplos abaixo dos dados:
 - Inclusão das annotations do Swagger para gerar automaticamente a documentação dos endpoints disponíveis
 - Realizar testes de performance
 - Endpoint que permita finalizar uma sessão aberta antes do prazo expirar
-- Retornar no endpoint de resultados se a sessão ainda está aberta e quando será fechada
 - Utilizar o padrão strategy para suporte a diversos tipos de respostas, podendo estas serem de múltiplas escolhas, escrita, preenchimento de formulários, etc.

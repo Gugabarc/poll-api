@@ -33,7 +33,7 @@ public class PollApi {
     @PostMapping("/{pollId}/vote")
     public ResponseEntity<Void> vote(@PathVariable String pollId, @RequestBody @Valid VoteRequest request) {
         log.info("Voting in poll id [{}] for cpf [{}]", pollId, request.cpf());
-        pollService.vote(pollId, request.cpf(), request.option());
+        pollService.vote(pollId, request.cpf(), request.optionAlias());
         log.info("Vote finished for cpf [{}]", request.cpf());
         return ResponseEntity.noContent().build();
     }
@@ -42,6 +42,6 @@ public class PollApi {
     public ResponseEntity<PollResultsResponse> getResult(@PathVariable String pollId) {
         log.info("Requested poll result id [{}]", pollId);
         Poll poll = pollService.findById(pollId);
-        return ResponseEntity.ok().body(new PollResultsResponse(poll.options()));
+        return ResponseEntity.ok().body(new PollResultsResponse(poll));
     }
 }

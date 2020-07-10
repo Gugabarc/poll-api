@@ -10,7 +10,7 @@ public class VoteRequest {
     private String cpf;
 
     @NotBlank
-    private String option;
+    private String optionAlias;
 
     public VoteRequest() {
     }
@@ -19,15 +19,15 @@ public class VoteRequest {
         return cpf;
     }
 
-    public String option() {
-        return option;
+    public String optionAlias() {
+        return optionAlias;
     }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
-    public void setOption(String option) {
-        this.option = option;
+    public void setOptionAlias(String optionAlias) {
+        this.optionAlias = optionAlias;
     }
 }

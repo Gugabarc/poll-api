@@ -3,13 +3,15 @@ package com.gustavo.pollapi.infrastructure.rest.poll;
 public class PollResultResponse {
 
     private String option;
+    private String alias;
     private int votes;
 
     public PollResultResponse() {
     }
 
-    public PollResultResponse(String option, int votes) {
+    public PollResultResponse(String option, String alias, int votes) {
         this.option = option;
+        this.alias = alias;
         this.votes = votes;
     }
 
@@ -27,5 +29,13 @@ public class PollResultResponse {
 
     public int getVotes() {
         return votes;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }

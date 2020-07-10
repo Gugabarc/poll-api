@@ -88,6 +88,10 @@ public class Poll {
         return expirationInMinutes;
     }
 
+    public LocalDateTime startedAt() {
+        return startedAt;
+    }
+
     public static final class Builder {
         private String id;
         private String question;
