@@ -29,7 +29,7 @@ public class FinishPollScheduler {
     @Scheduled(fixedRate = 20000)
     public void finishPoll(){
         Collection<Poll> polls = pollRepository.findAllByIsClosed(false);
-        log.info("Finishing {} open polls", polls.size());
+        log.info("Verifying expired open polls", polls.size());
         polls.stream()
                 .filter(p -> p.isExpired())
                 .forEach(p -> {
