@@ -10,7 +10,7 @@ Foram desenvolvidas duas versões, uma inicial utilizando Spring Webflux, que es
 
 ## Recursos
 
-@POST /v1/poll - permite criar uma sessão de votação com duração conforme especificada no campo **expirationInMinutes**. Caso este campo não seja preenchido, o valor default de duração é 1 minuto. Por default, as respostas são SIM e NÃO, entretanto o sistema foi desenvolvido de forma que isto pode ser flexibilizado em uma futura versão, sendo necessário apenas incluir estes campos na requisição.
+***@POST /v1/poll*** - permite criar uma sessão de votação com duração conforme especificada no campo **expirationInMinutes**. Caso este campo não seja preenchido, o valor default de duração é 1 minuto. Por default, as respostas são SIM e NÃO, entretanto o sistema foi desenvolvido de forma que isto pode ser flexibilizado em uma futura versão, sendo necessário apenas incluir estes campos na requisição.
 
 ```
 {
@@ -28,7 +28,7 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 }
 ```
 
-@GET /v1/poll/:id/result - permite obter resultado de sessões abertas ou finalizadas.
+***@GET /v1/poll/:id/result*** - permite obter resultado de sessões abertas ou finalizadas.
 
 ```
 {
@@ -45,7 +45,7 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 }
 ```
 
-@GET /v1/voter - permite cadastrar votantes. O CPF deve ser válido.
+***@GET /v1/voter*** - permite cadastrar votantes. O CPF deve ser válido.
 
 ```
 {
@@ -53,7 +53,7 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 }
 ```
 
-@POST /v1/poll/5f07cd9acedc75f0d8ce34cc/vote - permite que seja realizado um voto. O CPF deve estar estar registrado e ser válido. Um mesmo CPF pode realizar apenas um voto por votação. **Option** deve conter o valor **YES** ou **NO**.
+***@POST /v1/poll/:id/vote*** - permite que seja realizado um voto. O CPF deve estar estar registrado e ser válido. Um mesmo CPF pode realizar apenas um voto por votação. **Option** deve conter o valor **YES** ou **NO**.
 
 ```
 {
@@ -64,7 +64,9 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 
 ## Persistência
 
-A persistência dos dados é realizada no mongoDB utilizando três collections: polls (para votações), voters (para votantes) e vote (para registrar quem já votou em cada votação). Seguem exemplos abaixo dos dados:
+A persistência dos dados é realizada no mongoDB utilizando três collections: polls (para votações), voters (para votantes) e votes (para registrar quem já votou em cada votação). O BD está hospedado utilizando a infraestrutura grátis em cloud.mongodb.com.
+
+Seguem exemplos abaixo dos dados:
 
 **Polls**
 ```
@@ -130,3 +132,5 @@ A persistência dos dados é realizada no mongoDB utilizando três collections: 
 - Inclusão de Dockerfile para rodar a aplicação local
 - Inclusão das annotations do Swagger para gerar automaticamente a documentação dos endpoints disponíveis
 - Realizar testes de performance
+- Endpoint que permita finalizar uma sessão aberta antes do prazo expirar
+- Retornar no endpoint de resultados se a sessão ainda está aberta e quando será fechada
