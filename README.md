@@ -72,3 +72,4 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 - Utilizar alguma tecnologia como Spring Cloud Config + Vault para armazenamento de credenciais de banco, fila SQS e arquivos de configuração, que hoje estão contidos na aplicação
 - Inclusão de Dockerfile para rodar a aplicação local
 - Inclusão das annotations do Swagger para gerar automaticamente a documentação dos endpoints disponíveis
+- Realizar testes de performance
