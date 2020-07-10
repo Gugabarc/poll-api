@@ -32,19 +32,19 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 
 ```
 {
-    "responses": [
+    "options": [
+        {
+            "option": "Sim",
+            "alias": "YES",
+            "votes": 0
+        },
         {
             "option": "Não",
             "alias": "NO",
             "votes": 0
-        },
-        {
-            "option": "Sim",
-            "alias": "YES",
-            "votes": 1
         }
     ],
-    "endIn": "2020-07-09T23:10:26.794",
+    "expiresIn": "2020-07-10T03:14:51.712",
     "question": "Você gosta do home office?"
 }
 ```

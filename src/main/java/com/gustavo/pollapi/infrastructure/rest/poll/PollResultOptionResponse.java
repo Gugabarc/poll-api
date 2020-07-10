@@ -1,15 +1,15 @@
 package com.gustavo.pollapi.infrastructure.rest.poll;
 
-public class PollResultResponse {
+public class PollResultOptionResponse {
 
     private String option;
     private String alias;
     private int votes;
 
-    public PollResultResponse() {
+    public PollResultOptionResponse() {
     }
 
-    public PollResultResponse(String option, String alias, int votes) {
+    public PollResultOptionResponse(String option, String alias, int votes) {
         this.option = option;
         this.alias = alias;
         this.votes = votes;
