@@ -5,6 +5,7 @@ import com.gustavo.pollapi.model.Poll;
 import com.gustavo.pollapi.model.PollMessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,10 +26,10 @@ public class FinishPollScheduler {
         this.pollMessageSender = pollMessageSender;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 20000)
     public void finishPoll(){
         Collection<Poll> polls = pollRepository.findAllByIsClosed(false);
-
+        log.info("Finishing {} open polls", polls.size());
         polls.stream()
                 .filter(p -> p.isExpired())
                 .forEach(p -> {
