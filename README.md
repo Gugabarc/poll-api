@@ -4,6 +4,8 @@ Poll-api é um microserviço que permite realizar votações, contabilizar votos
 
 O sistema foi desenvolvido utilizando Java 8, Spring boot, Spring data e mongoDB. A validação de campos obrigatórios utiliza as annotations disponíveis na especificação Bean Validation 2.0.
 
+A estrutura de pacotes busca seguir conceitos do DDD, onde o código fonte está dividido em model, application e infrastructure.
+
 Foram desenvolvidas duas versões, uma inicial utilizando Spring Webflux, que está no branch ***reactive***. Esta primeira versão foi desenvolvida com o intuito de aprofundar o conhecimento em programação reativa, entretanto não foi possível finalizá-la com a qualidade desejada dentro do prazo, sendo disponibilizada separadamente em um branch para posterior aperfeiçoamento. A versão final, já coberta parcialmente com testes unitários, está no branch ***master***.
 
 ## Recursos
@@ -59,6 +61,61 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
     "option": "string"
 }
 ```
+
+## Persistência
+
+A persistência dos dados é realizada no mongoDB utilizando três collections: polls (para votações), voters (para votantes) e vote (para registrar quem já votou em cada votação). Seguem exemplos abaixo dos dados:
+
+**Polls**
+```
+[
+  {
+    "_id": {"$oid": "5f07cd9acedc75f0d8ce34cc"},
+    "_class": "com.gustavo.pollapi.model.Poll",
+    "description": "Pergunta realizada dia 09/07/2020",
+    "expirationInMinutes": 2,
+    "isClosed": true,
+    "options": [
+      {
+        "alias": "NO",
+        "option": "Não",
+        "voteCount": 0
+      },
+      {
+        "alias": "YES",
+        "option": "Sim",
+        "voteCount": 1
+      }
+    ],
+    "question": "Você gosta de trabalhar no modelo de home office?",
+    "startedAt": {"$date": "2020-07-10T02:08:26.794Z"}
+  }
+]
+```
+
+**Voters**
+```
+[
+  {
+    "_id": "11111111111",
+    "_class": "com.gustavo.pollapi.model.Voter"
+  }
+]
+```
+
+***Votes***
+```
+[
+  {
+    "_id": {"$oid": "5f07cdaacedc75f0d8ce34cd"},
+    "_class": "com.gustavo.pollapi.model.Vote",
+    "date": {"$date": "2020-07-10T02:08:42.713Z"},
+    "poll": "{ \"$ref\" : \"polls\", \"$id\" : \"5f07cd9acedc75f0d8ce34cc\" }",
+    "voter": "{ \"$ref\" : \"voters\", \"$id\" : \"84692766034\" }"
+  }
+]
+```
+
 
 ## Melhorias para próximas versões
 
