@@ -34,18 +34,18 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 {
     "options": [
         {
-            "option": "Sim",
-            "alias": "YES",
+            "option": "string",
+            "alias": "string",
             "votes": 0
         },
         {
-            "option": "Não",
-            "alias": "NO",
+            "option": "string",
+            "alias": "string",
             "votes": 0
         }
     ],
     "expiresIn": "2020-07-10T03:14:51.712",
-    "question": "Você gosta do home office?"
+    "question": "string"
 }
 ```
 
@@ -150,7 +150,7 @@ Seguem exemplos abaixo dos dados:
     "_class": "com.gustavo.pollapi.model.Vote",
     "date": {"$date": "2020-07-10T02:08:42.713Z"},
     "poll": "{ \"$ref\" : \"polls\", \"$id\" : \"5f07cd9acedc75f0d8ce34cc\" }",
-    "voter": "{ \"$ref\" : \"voters\", \"$id\" : \"84692766034\" }"
+    "voter": "{ \"$ref\" : \"voters\", \"$id\" : \"11111111111\" }"
   }
 ]
 ```
