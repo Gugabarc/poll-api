@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/v1/voters")
+@RequestMapping("/v1/voter")
 public class VoterApi {
 
     private Logger log = LoggerFactory.getLogger(VoterApi.class);

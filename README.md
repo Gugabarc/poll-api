@@ -26,7 +26,7 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 }
 ```
 
-@GET /v1/poll/:pollId/result - permite obter resultado de sessões abertas ou finalizadas.
+@GET /v1/poll/:id/result - permite obter resultado de sessões abertas ou finalizadas.
 
 ```
 {
@@ -43,7 +43,7 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 }
 ```
 
-@GET /v1/voters - permite cadastrar votantes. O CPF deve ser válido.
+@GET /v1/voter - permite cadastrar votantes. O CPF deve ser válido.
 
 ```
 {
