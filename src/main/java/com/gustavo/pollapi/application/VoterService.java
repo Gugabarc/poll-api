@@ -1,17 +1,17 @@
 package com.gustavo.pollapi.application;
 
 import com.gustavo.pollapi.infrastructure.integration.ValidateVoterClient;
+import com.gustavo.pollapi.infrastructure.integration.ValidateVoterResponse;
 import com.gustavo.pollapi.infrastructure.repository.VoterRepository;
 import com.gustavo.pollapi.model.Voter;
 import com.gustavo.pollapi.model.exception.InvalidVoterException;
 import com.gustavo.pollapi.model.exception.VoterAlreadyExistsException;
 import com.gustavo.pollapi.model.exception.VoterNotFoundException;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
-import static com.gustavo.pollapi.model.VoterStatus.ABLE_TO_VOTE;
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
-import static reactor.core.publisher.Mono.error;
+import java.util.Optional;
+
+import static com.gustavo.pollapi.model.VoterStatus.UNABLE_TO_VOTE;
 
 @Service
 public class VoterService {
@@ -24,21 +24,32 @@ public class VoterService {
         this.validateVoterClient = validateVoterClient;
     }
 
-    public Mono<Void> create(String cpf) {
-        return voterRepository.findById(cpf)
-                .hasElement()
-                .filter(v -> !v)
-                .switchIfEmpty(error(new VoterAlreadyExistsException()))
-                .flatMap(v -> voterRepository.save(new Voter(cpf)))
-                .then();
+    public void create(String cpf) {
+        if(voterRepository.findById(cpf).isPresent()){
+            throw new VoterAlreadyExistsException();
+        }
+
+        voterRepository.save(new Voter(cpf));
     }
 
-    public Mono<Voter> findEnabledVoter(String cpf) {
-        return validateVoterClient.validate(cpf)
-                .filter(r -> equalsIgnoreCase(ABLE_TO_VOTE.name(), r.getStatus()))
-                .switchIfEmpty(error(new InvalidVoterException()))
-                .flatMap(v -> voterRepository.findById(cpf))
-                .switchIfEmpty(error(new VoterNotFoundException()));
+    public Voter findEnabledVoter(String cpf) {
+        checkVoterStatus(cpf);
+        return findById(cpf);
+    }
+
+    private Voter findById(String cpf) {
+        Optional<Voter> voter = voterRepository.findById(cpf);
+        if(!voter.isPresent()){
+            throw new VoterNotFoundException();
+        }
+        return voter.get();
+    }
+
+    private void checkVoterStatus(String cpf) {
+        ValidateVoterResponse validateVoterResponse = validateVoterClient.validate(cpf);
+        if(validateVoterResponse.getStatus() == UNABLE_TO_VOTE){
+            throw new InvalidVoterException();
+        }
     }
 
 }

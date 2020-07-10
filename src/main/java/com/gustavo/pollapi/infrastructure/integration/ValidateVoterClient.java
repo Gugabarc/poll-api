@@ -4,12 +4,9 @@ import com.gustavo.pollapi.model.exception.InvalidVoterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import static reactor.core.publisher.Mono.error;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class ValidateVoterClient {
@@ -19,16 +16,22 @@ public class ValidateVoterClient {
     @Value("${validate.voter.url}")
     private String url;
 
-    public Mono<ValidateVoterResponse> validate(String cpf) {
-        Mono<ValidateVoterResponse> responseMono = WebClient.create().get()
-                .uri(url + cpf)
-                .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, v -> error(new InvalidVoterException()))
-                .bodyToMono(ValidateVoterResponse.class);
+    public ValidateVoterClient() {
+    }
 
-        log.info("Request to validate CPF returned {}", responseMono.block().getStatus());
+    public ValidateVoterResponse validate(String cpf) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<ValidateVoterResponse> response = restTemplate.getForEntity(url + "/" + cpf, ValidateVoterResponse.class);
 
-        return responseMono;
+        if(!response.getStatusCode().is2xxSuccessful()){
+            throw new InvalidVoterException();
+        }
+
+        ValidateVoterResponse validateVoterResponse = response.getBody();
+
+        log.info("Request to validate CPF returned {}", validateVoterResponse.getStatus());
+
+        return validateVoterResponse;
     }
 
 }

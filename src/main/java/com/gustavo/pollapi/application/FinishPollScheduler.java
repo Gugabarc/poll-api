@@ -9,6 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 @Component
 @EnableScheduling
 public class FinishPollScheduler {
@@ -25,16 +27,16 @@ public class FinishPollScheduler {
 
     @Scheduled(fixedRate = 5000)
     public void finishPoll(){
-        Poll poll = pollRepository.findAllByIsFinished(false).blockFirst();
-        if(poll == null){
-            return;
-        }
-        log.info("Finishing open poll id {}", poll.id());
+        Collection<Poll> polls = pollRepository.findAllByIsClosed(false);
 
-        poll.setFinished(true);
-        pollRepository.save(poll).subscribe();
-
-        pollMessageSender.send(poll);
+        polls.stream()
+                .filter(p -> p.isExpired())
+                .forEach(p -> {
+                    log.info("Finishing open poll id {}", p.id());
+                    p.setClosed(true);
+                    pollRepository.save(p);
+                    pollMessageSender.send(p);
+                });
     }
 
 }

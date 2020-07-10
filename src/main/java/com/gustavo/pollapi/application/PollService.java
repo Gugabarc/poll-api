@@ -5,17 +5,18 @@ import com.gustavo.pollapi.infrastructure.repository.VoteRepository;
 import com.gustavo.pollapi.model.Poll;
 import com.gustavo.pollapi.model.PollOption;
 import com.gustavo.pollapi.model.Vote;
+import com.gustavo.pollapi.model.Voter;
 import com.gustavo.pollapi.model.exception.AlreadyVotedException;
 import com.gustavo.pollapi.model.exception.PollFinishedException;
 import com.gustavo.pollapi.model.exception.PollNotFoundException;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
-import static reactor.core.publisher.Mono.error;
 
 @Service
 public class PollService {
@@ -31,9 +32,11 @@ public class PollService {
         this.voteRepository = voteRepository;
     }
 
-    public Mono<String> create(String question, String description, Integer expirationInMinutes) {
-        return pollRepository.save(pollFrom(question, description, expirationInMinutes))
-                .map(p -> p.id());
+    public String create(String question, String description, Integer expirationInMinutes) {
+        return Stream.of(pollRepository.save(pollFrom(question, description, expirationInMinutes)))
+                .map(p -> p.id())
+                .findFirst()
+                .get();
     }
 
     private Poll pollFrom(String question, String description, Integer expirationInMinutes) {
@@ -43,42 +46,45 @@ public class PollService {
         return Poll.aPoll()
                 .question(question)
                 .description(description)
-                .expirationMinutes(expirationInMinutes)
+                .expirationMinutes(expirationInMinutes == null ? 1 : expirationInMinutes)
                 .startedAt(LocalDateTime.now())
                 .options(options)
-                .isFinished(false)
+                .isClosed(false)
                 .build();
     }
 
-    public Mono<Void> vote(String pollId, String cpf, String option) {
-        return Mono.zip(
-                voterService.findEnabledVoter(cpf),
-                findOpenPoll(pollId),
-                canVote(cpf, pollId))
-                .map(o -> {
-                    o.getT2().vote(option);
-                    pollRepository.save(o.getT2()).subscribe();
-                    voteRepository.save(new Vote(o.getT1().cpf(), o.getT2().id())).subscribe();
-                    return o;
-                }).then();
+    public void vote(String pollId, String cpf, String option) {
+        Voter voter = voterService.findEnabledVoter(cpf);
+        if(hasVoted(cpf, pollId)) {
+            throw new AlreadyVotedException();
+        }
+        Poll poll = findOpenPoll(pollId);
+        poll.vote(option);
+        pollRepository.save(poll);
+        voteRepository.save(new Vote(voter, poll));
     }
 
-    protected Mono<Boolean> canVote(String cpf, String pollId) {
-        return voteRepository.findByCpfAndPollId(cpf, pollId)
-                .hasElement()
-                .filter(v -> !v)
-                .switchIfEmpty(error(new AlreadyVotedException()));
+    protected boolean hasVoted(String cpf, String pollId) {
+        return voteRepository.findByVoterCpfAndPollId(cpf, pollId).isPresent();
     }
 
-    public Mono<Poll> findOpenPoll(String pollId) {
-        return pollRepository.findById(pollId)
-                .switchIfEmpty(error(new PollNotFoundException()))
-                .filter(Poll::isOpen)
-                .switchIfEmpty(error(new PollFinishedException()));
+    public Poll findOpenPoll(String pollId) {
+        Optional<Poll> poll = pollRepository.findById(pollId);
+        if(!poll.isPresent()){
+           throw new PollNotFoundException();
+        }
+
+        if (!poll.get().isOpen()){
+            throw new PollFinishedException();
+        }
+        return poll.get();
     }
 
-    public Mono<Poll> resultVote(String pollId) {
-        return pollRepository.findById(pollId)
-                .switchIfEmpty(error(new PollNotFoundException()));
+    public Poll findById(String pollId) {
+        Optional<Poll> poll = pollRepository.findById(pollId);
+        if(!poll.isPresent()){
+            throw new PollNotFoundException();
+        }
+        return poll.get();
     }
 }

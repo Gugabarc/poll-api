@@ -1,14 +1,13 @@
 package com.gustavo.pollapi.infrastructure.repository;
 
 import com.gustavo.pollapi.model.Poll;
-import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Flux;
+
+import java.util.Collection;
 
 @Repository
-public interface PollRepository extends ReactiveMongoRepository<Poll, String> {
+public interface PollRepository extends CrudRepository<Poll, String> {
 
-    @Query("{'isFinished' : ?0}")
-    Flux<Poll> findAllByIsFinished(boolean isFinished);
+    Collection<Poll> findAllByIsClosed(boolean isClosed);
 }
