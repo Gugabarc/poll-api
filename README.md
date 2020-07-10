@@ -12,6 +12,9 @@ Foram desenvolvidas duas versões, uma inicial utilizando Spring Webflux, que es
 
 ***@POST /v1/poll*** - permite criar uma sessão de votação com duração conforme especificada no campo **expirationInMinutes**. Caso este campo não seja preenchido, o valor default de duração é 1 minuto. Por default, as respostas são SIM e NÃO, entretanto o sistema foi desenvolvido de forma que isto pode ser flexibilizado em uma futura versão, sendo necessário apenas incluir estes campos na requisição.
 
+Link heroku - https://gustavo-poll-api.herokuapp.com/v1/poll
+
+
 ```
 {
     "question": "string",
@@ -29,6 +32,8 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 ```
 
 ***@GET /v1/poll/:id/result*** - permite obter resultado de sessões abertas ou finalizadas.
+
+Link heroku - https://gustavo-poll-api.herokuapp.com/v1/poll/:id/result - substituir o :id pelo id da sessão votação
 
 ```
 {
@@ -51,6 +56,8 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 
 ***@GET /v1/voter*** - permite cadastrar votantes. O CPF deve ser válido.
 
+Link heroku - https://gustavo-poll-api.herokuapp.com/v1/voter
+
 ```
 {
     "cpf": "string"
@@ -58,6 +65,8 @@ O retorno possui o código da sessão, que deve ser utilizado para realizar voto
 ```
 
 ***@POST /v1/poll/:id/vote*** - permite que seja realizado um voto. O CPF deve estar estar registrado e ser válido. Um mesmo CPF pode realizar apenas um voto por votação. **Option** deve conter o valor **YES** ou **NO**.
+
+Link heroku - https://gustavo-poll-api.herokuapp.com/v1/poll/:id/vote - substituir o :id pelo id da sessão de votação
 
 ```
 {
